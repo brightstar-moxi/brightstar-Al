@@ -1,7 +1,7 @@
 import express from 'express';
 import * as dotenv from 'dotenv';
 import cors from cors;
-import {Configuration, OperAIApi} = require ('openai');
+import {Configuration, OperAIApi} from('openai');
 
 dotenv.config()
 
@@ -27,11 +27,20 @@ app.post('/', async (req,res) => {
 
         const response = await openai.createCompletion({
             model: "gpt-4",
+            prompt: `${prompt}`,
             messages: [],
             temperature: 0,
-            max_tokens: 1024,
+            max_tokens: 3000,
+            top_p: 1,
+            frequency_penalty: 0.5,
+             presence_penalty: 0,
+        });
+
+        res.status(200).send({
+            bot: response.data.choices[0].text
         })
     } catch (error) {
-
+            console.log(error);
+            res.status(500).send({error})
     }
 })
