@@ -185,7 +185,19 @@ const handleSubmit = async (e) => {
     })
 
     clearInterval(loadInterval);
-     messageDivDiv.innerHTML = ""
+     messageDiv.innerHTML = "";
+     if(response.ok) {
+        const data = await response.json();
+        const parsedData = data.bot.trim();
+
+        typeText(messageDiv, parsedData);
+     } else {
+        const err = await response.text();
+
+        messageDiv.innerText= "Something went wrong";
+
+        alert(err);
+     }
 }
 
 form.addEventListener('submit', handleSubmit)
